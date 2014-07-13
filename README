@@ -1,0 +1,153 @@
+  ___  ______ __ __ __ __  __ 
+ // \\ | || | || || || ||\ || 
+ ||=||   ||   || || || ||\\|| 
+ || ||   ||   \\_// || || \|| 
+                              
+ __  __  ____    ___   ____   _  _  
+ ||\ ||  || ))  // \\  || \\  \\//  
+ ||\\||  ||=)  ((   )) ||  ))  )/   
+ || \||  ||_))  \\_//  ||_//  //    
+                                    
+  __  __ ___  ___ __ __ __     ___  ______   ___   ____ 
+ (( \ || ||\\//|| || || ||    // \\ | || |  // \\  || \\
+  \\  || || \/ || || || ||    ||=||   ||   ((   )) ||_//
+ \_)) || ||    || \\_// ||__| || ||   ||    \\_//  || \\
+
+Atuin is a 2D n-body solver using a treecode and a leapfrog
+algorithm. It is designed specifically to be used to study
+planet formation.
+
+
+========
+CONTENTS
+========
+The program is divided into the following files:
+- atuin.f95: the master program, which calls other functions 
+             and subroutines
+- forces.f95: functions describing various forces acting 
+             between particles
+- fortranposix.f90: a third party library needed to produce 
+             images from the program's output
+- gnuplot_fortran95.f90: a third party library which interfaces
+             with gnuplot. Used to produce images from program's
+             output.
+- leap2d.f95: the leapfrog integrator.
+- mkhist.f95: a program which creates "heat-map" style images
+             and videos from a simulation's output.
+- mkhistdat.f95: a program which produces only the data files
+             used to create the heat-map images.
+- mkvideo.f95: makes a video showing the motion of individual
+             particles over the course of a simulation.
+- particle.f95: defines various properties of the particles
+             in the simulation and provides some functions and
+             subroutines for interacting with them.
+- pdstrbtn.f95: contains subroutines to intialize the particle 
+             distribution, to write it to a binary file, and to
+             read in such a binary file. Also contains variables
+             storing information about the collection of 
+             particles as a whole.
+- physvals.f95: contains parameters with various physical constants
+             and useful values.
+- plothist.f95: plots the data files produced by mkhistdat.f95 in
+             order to produce the desired video.
+- posixwrapper.c: a third-paryt library needed in order to produce
+             images from the simulation's output.
+- randgen.f95: provides a uniform and a normal random number
+             generator. Both are from a third party and have been
+             adapted to match the coding style of the rest of the
+             program.
+- tree2d.f95: the information and subroutines needed to implement
+             a treecode.
+
+Also of note is "namelist.in," in which the user specifies various
+parameters relating to the simulation. See the "USE" section for more
+details. Additionally, a Makefile is present for compiling.
+
+
+===========
+COMPILATION
+===========
+The main program is compiled as follows:
+    $ make all
+The various plotting programs can be compiled with the following
+commands:
+    $ make video
+    $ make hist
+    $ make histdat
+    $ make plothist
+The object and module files can be removed with
+    $ make clean
+The Makefile uses gfortran and gcc. Other compilers have not been
+tested. The has been extensively tested with gcc v4.8, less
+extensively with gcc v4.1.2. With the latter it has been found
+that the program's header does not print properly.
+
+Note that the programs for producing images and videos may
+not work with older versions of gnuplot. They are all
+known to work with gnuplot v4.6.4. ImageMagick is also required
+for these programs.
+
+
+===
+USE
+===
+The program is run with the syntax
+    $ ./atuin namelist.in
+where namelist.in contains various parameters relating to the
+simulation. These are:
+- density: the density of a disc particle
+- discmass: the total mass of the protoplanetary disc
+- infile: if the user wishes to start the simulation from the
+output of another, the output file is specified here
+- inrad: the inner radius of the protoplanetary disc
+- massdev: the standard deviation in the mass of disc particles, as
+a fraction of average mass
+- new: whether to use the old particle distribution specified in
+"infile" (F) or whether to create a new one (T)
+- numpart: number of particles to have in the disc
+- outrad: the outer radius of the protoplanetary disc
+- stardnst: the density of the protostare around which the disc 
+orbits
+- starmass: the mass of the protostar around which the disc orbits
+- ttltime: number of seconds after which the simulation should end
+- veldev: standard deviation in particle velocity, as a percentage
+of velocity which places particles in circular orbit.
+- dumpfreq: how often (in number of timesteps) to save a copy of 
+the entire particle distribution
+- dumpname: the base name to use for the files
+- outfile: the name of the text file recording various properties
+of the system, such as energy and angular momentum
+- startnum: where to start numbering the files containing the 
+particle distribution
+
+The programs for making videos are, in general, called as follows:
+    $ mkvideo files.txt ? xmin xmax ymin ymax
+files.txt contains a list of the output binaries from which 
+the video will be made. ? is a single character which is "s" if you
+wish for the image files to be saved after the animation has been
+made. The remaining four arguments specify the upper and lower limits,
+in AU, of the region which is to be plotted. The second argument
+should not be included when using mkhistdat. The x and y ranges
+are optional for mkvideom ,required for the mkhist and mkhistdat,
+and unneccessary for plothist.
+
+
+=======
+LICENSE
+=======
+This program is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 2 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+MA 02110-1301, USA.
+
+

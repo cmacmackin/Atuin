@@ -1,0 +1,18 @@
+&simspecs
+ density = 5.514d3,
+ discmass = 4.d26,
+ infile = 'sim-000000000.out',
+ inrad = 5.235925d10,
+ massdev = 5.d-2,
+ new = T,
+ numpart = 200,
+ outrad = 4.039143d11,
+ stardnst = 1.409d3,
+ starmass = 1.9891d30,
+ ttltime = 3.11256d10,
+ veldev = 5.d-2/
+&outspecs
+ dumpfreq = 10000,
+ dumpname = 'sim',
+ outfile = 'sim.dat',
+ startnum = 0/
