@@ -17,6 +17,11 @@ Atuin is a 2D n-body solver using a treecode and a leapfrog
 algorithm. It is designed specifically to be used to study
 planet formation.
 
+WARNING: There are currently serious problems with this program.
+         Energy and angular momentum are not conserved over 
+         time scales of hundreds of years. The cause of this
+         bug is unknown, but it means that the results of any
+         simulations must be considered unreliable. 
 
 ========
 CONTENTS
